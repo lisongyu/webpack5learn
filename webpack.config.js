@@ -1,47 +1,26 @@
-const path = require('path');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { DefinePlugin } = require('webpack')
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 
+const path = require('path')
 module.exports = {
-  entry: './src/index.js',
+  mode: 'development',
+  entry: './src/main.js',
   output: {
-    filename: 'main.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, './build')
   },
   module: {
     rules: [
       {
-        test: /\.png/,
-        type: 'asset/resource',
-        generator: {
-          filename: "img/[name].[hash:6][ext]"
-        }
+        test: /\.js$/i,
+        use: [
+          '01',
+          '02',
+          '03'
+        ]
       }
     ]
   },
-  plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      title: "coderwhy webpack",
-      template: './public/index.html'
-    }),
-    new DefinePlugin({
-      BASE_URL: '"./"'
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: "public",
-          globOptions: {
-            ignore: [
-              "**/index.html",
-              "**/.DS_Store"
-            ]
-          }
-        },
-      ],
-    }),
-  ]
-};
+  resolveLoader:{
+    modules:['node_modules','./my-loader']
+  }
+
+}
